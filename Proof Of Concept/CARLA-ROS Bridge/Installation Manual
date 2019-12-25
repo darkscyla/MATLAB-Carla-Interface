@@ -1,0 +1,138 @@
+LAST UPDATE:10.10.2019
+-INSTALLATION FOR CARLA-ROS BRIDGE-------------------------------------------------------------------------------
+
+To install Carla on Ubuntu(Linux), steps in the given link is followed.
+https://carla.readthedocs.io/en/latest/how_to_build_on_linux/
+
+Unreal Engine is installed from Epic Games Github repository.
+https://github.com/EpicGames/UnrealEngine
+
+ROS(Robot Operating System) is installed by following the steps in the given link.
+http://wiki.ros.org/kinetic/Installation/Ubuntu
+
+For our project ROS Kinetic is preferred.
+
+Carla-Ros Bridge is installed from Carla's Github repository.
+https://github.com/carla-simulator/ros-bridge
+
+-RUN THE CARLA-ROS-MATLAB CONNECTION----------------------------------------------------------------------------
+
+1.STEP: Carla Package is created after compiling all the files inside Unreal Engine.
+
+For CARLA to find your Unreal Engine's installation folder you need to set the following environment variable
+export UE4_ROOT=~/UnrealEngine_4.22
+
+Now that the environment is set up, you can use make to run different commands and build the different modules
+make launch     # Compiles the simulator and launches Unreal Engine's Editor.
+make PythonAPI  # Compiles the PythonAPI module necessary for running the Python examples.
+make package    # Compiles everything and creates a packaged version able to run without UE4 editor.
+make help       # Print all available commands.
+
+-make package and -make PythonAPI are used to create compiled version of CARLA and enable user to use Python examples.
+***END***
+
+2.STEP: Run the simulator
+Firstly, you need to find location of compiled CARLA package and run a terminal inside folder.
+
+For our project it is in the given location after all steps.
+/home/aa/UnrealEngine_4.22/carla/Unreal/CarlaUE4/LinuxNoEditor
+
+Run the CARLA simulation
+./CarlaUE4.sh -windowed -ResX=320 -ResY=240
+
+OPTIONAL:./CarlaUE4.sh -windowed -ResX=320 -ResY=240 -benchmark -fps=10
+To run a smooth and stable simulation, fps can be set a constant value.
+
+***END***
+3.STEP: Use Python API examples to spawn npcs and add sensors
+Python examples are in this directory for our project.
+/home/aa/UnrealEngine_4.22/carla/PythonAPI/examples
+
+Spawning npc -n part means number of npc that will be spawned.
+./spawn_npc.py -n 80
+*The number set the number of non-player characters(npc)
+
+OPTIONAL:Run manual control python file and create sensors that are attached to vehicle for demo this control is set to automated mode.
+./manual_control.py
+***END***
+
+4.STEP: Initiate the ROS bridge
+
+You have to put in the complete path to the egg-file including the egg-file itself.
+Depending on the type of CARLA (pre-build, or build from source),
+the egg files are typically located either directly in the PythonAPI folder or in PythonAPI/dist.
+
+export PYTHONPATH=$PYTHONPATH:/home/aa/UnrealEngine_4.22/carla/PythonAPI/carla/dist/carla-0.9.6-py2.7-linux-x86_64.egg
+
+Run the ROS bridge
+
+source ~/carla-ros-bridge/catkin_ws/devel/setup.bash
+# Option 1: start the ros bridge
+roslaunch carla_ros_bridge carla_ros_bridge.launch
+
+# Option 2: start the ros bridge together with RVIZ
+roslaunch carla_ros_bridge carla_ros_bridge_with_rviz.launch
+
+# Option 3: start the ros bridge together with an example ego vehicle
+roslaunch carla_ros_bridge carla_ros_bridge_with_example_ego_vehicle.launch
+
+Option 2 opens the Rviz.
+Rviz is used to visualize the sensor data that is coming from Carla-Ros Bridge.
+
+Option 3 is used for our project.
+After option 3 is written on terminal. A window that allows us to control the vehicle comes to the screen.
+
+***END***
+
+5.STEP: Create a Ros custom message in MATLAB
+
+Before starting this step, 'ROS Toolbox' and 'ROS Toolbox interface for ROS Custom Messages' add-ons should be installed on MATLAB.
+After this, 'carla_msgs.zip' file which is inside 'Additional Installation Files' in Gitlab should be unzipped.
+'carla_msgs' folder in /home/aa/carla-ros-bridge/ros-bridge  should be deleted and the unzipped 'carla_msgs' file inside Gitlab should be copied into /home/aa/carla-ros-bridge/ros-bridge.
+
+
+To add custom messages, 'rosgenmsg' function is used.
+Type on matlab command window
+-rosgenmsg('/home/aa/carla-ros-bridge/ros-bridge')
+
+After process is ended, there are some steps that are displayed on matlab.
+Firstly, make additional change into the javaclasspath.txt file and save the file.
+Secondly, add the custom message folder to the MATLAB path by executing.
+
+-addpath('home/aa/carla-ros-bridge/ros-bridge/matlab_gen/msggen')
+-savepath
+
+******
+If you come across an error in this step, open a terminal and type -sudo nautilus
+This line will open a file explorer with a root permission.
+Go to the '/home/aa/matlab/toolbox/local' and select 'pathdef.m'
+Press right click and choose properties
+Change all the permission settings to Read and Write.
+******
+
+Thirdly, restart MATLAB and verift that you can use the messages.
+Type 'rosmsg list' and essure that the output contains the generated custom message types.
+
+At the end of all steps, Carla ROS custom messages can be used in MATLAB.
+***END***
+
+6.STEP: Make the connection between Simulink and ROS
+
+Open the MATLAB and Start a ROS network on command window.
+rosinit
+
+Open Simulink Project
+open_system ( 'CarlaRosMatlab-VehicleControl.slx' )
+
+Stop the simulation and shut down the ROS network.
+rosshutdown
+
+NOTE: https://de.mathworks.com/help/robotics/ug/read-a-ros-image-message-in-simulink.html
+https://de.mathworks.com/help/ros/ug/create-custom-messages-from-ros-package.html
+
+***END**
+*This documantation is used to make the connection and control the vehicle by using Simulink.
+
+
+
+

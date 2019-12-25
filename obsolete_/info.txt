@@ -1,0 +1,2 @@
+This folder contains all the code and files that are depreciated
+but is preferable to be kept around
