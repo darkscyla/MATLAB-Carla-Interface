@@ -30,7 +30,7 @@ For demonstration, different sensors are spawned inside Carla while their data i
 
 ![sensors sampels](resources/sample.png)
 
-Finally, due to the paid nature of MATLAB licence, I am no longer be able to update the package. The underlying concepts and techniques can be utilized by the users for their needs. Queries are always welcomed regradless.
+Finally, due to the paid nature of the MATLAB license, I can no longer update the package. The underlying concepts and techniques can be utilized by the users for their needs. Queries are always welcomed regardless.
 
 ## Requirements
 
