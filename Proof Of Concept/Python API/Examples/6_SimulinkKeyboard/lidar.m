@@ -13,7 +13,7 @@ function lidar(fileName, sensorType, varName)
         error("Invalid variable name\n")
     end
     
-    %% Create a python file 
+    %% Generate the python file 
     file = fopen(strcat(fileName, '.py'), 'w');
     
     % Automatically genrates a python file containing the sensor call back
@@ -25,14 +25,13 @@ function lidar(fileName, sensorType, varName)
     fprintf(file, '\n');
     fprintf(file, 'def do_something(_image):\n');
     fprintf(file, '    global %s\n', varName);
-    fprintf(file, '    data = np.frombuffer(image.raw_data, dtype="float32")\n');
+    fprintf(file, '    data = np.frombuffer(_image.raw_data, dtype="float32")\n');
     fprintf(file, '\n');
     fprintf(file, '    # Pair up in [x,y,z] format\n');
-    fprintf(file, '    data = np.reshape(data, (-1,3))\n');
+    fprintf(file, '    data = np.reshape(data, (-1,4))\n');
     fprintf(file, '\n');
     fprintf(file, '    # Convert the data into MATLAB cast compatible type\n');
     fprintf(file, '    %s = np.ascontiguousarray(data)\n', varName);
     
     fclose(file);
-
 end

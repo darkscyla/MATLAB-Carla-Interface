@@ -19,8 +19,8 @@ function pyModule = sensorBind(sensor, fileName, sensorType, varName)
     %                                                 	 and tags them with id
     %				  6. semantic_segmentation_rgb	---> Map the id to RGB for 
     %   												 visualization 
-    %                 7. lidar                		---> Gives 3d points array
-    %
+    %                 7. lidar                		---> Gives 3d points array 
+    %                                                    along with intensity values
     %
     % ---------------------------------------------------------------------
     %                               Output

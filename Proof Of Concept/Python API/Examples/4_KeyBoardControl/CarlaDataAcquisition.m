@@ -21,7 +21,7 @@ blueprint.set_attribute('image_size_y', '1080')
 transform = py.carla.Transform(py.carla.Location(pyargs('x',0.8, 'z',1.7)));
 sensor = world.spawn_actor(blueprint, transform, pyargs('attach_to',tesla));
 
-pyModule = sensorBind(sensor, "fin", "rgb", "array");
+pyModule = sensorBind(sensor, "rgb", "rgb", "array");
 
 % Display Initial Frame
 image = py.getattr(pyModule, 'array');

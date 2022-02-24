@@ -48,7 +48,7 @@ classdef CarlaEnvironment < matlab.System & matlab.system.mixin.Propagates
             % Perform one-time calculations, such as computing constants
             port = int16(2000);
             client = py.carla.Client('localhost', port);
-            client.set_timeout(2.0);
+            client.set_timeout(10.0);
             world = client.get_world();
             
             % Spawn Vehicle
@@ -56,9 +56,9 @@ classdef CarlaEnvironment < matlab.System & matlab.system.mixin.Propagates
             car_list = py.list(blueprint_library.filter("model3"));
             car_bp = car_list{1};
             spawn_point = py.random.choice(world.get_map().get_spawn_points());
-            spawn_point.location.x = -88.8;
-            spawn_point.location.y = 149.0;
-            spawn_point.rotation.yaw = 90;
+%             spawn_point.location.x = -88.8;
+%             spawn_point.location.y = 149.0;
+%             spawn_point.rotation.yaw = 90;
             
             obj.tesla = world.spawn_actor(car_bp, spawn_point);
             obj.tesla.set_autopilot(false);

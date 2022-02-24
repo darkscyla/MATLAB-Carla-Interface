@@ -19,13 +19,35 @@ function semantic_segmentation_rgb(fileName, sensorType, varName)
     % Automatically genrates a python file containing the sensor call back
     % bindings
     fprintf(file, 'import numpy as np\n');
+    fprintf(file, 'from collections import defaultdict\n');
     fprintf(file, '\n');
     fprintf(file, '# Converts the tags to human observable colors\n');
-    fprintf(file, '_mapDict = { 0:( 0, 0, 0),			1:(70, 70, 70),		2:(190, 153, 153),\n');
-    fprintf(file, '             3:(250, 170, 160),		4:(220, 20, 60),	5:(153, 153, 153),\n');
-    fprintf(file, '             6:(157, 234, 50),		7:(128, 64, 128),	8:(244, 35, 232),\n');
-    fprintf(file, '             9:(107, 142, 35),		10:(0, 0, 142),		11:(102, 102, 156),\n');
-    fprintf(file, '             12:(220, 220, 0)}\n');
+    fprintf(file, '_mapDict = defaultdict(lambda: (255, 255, 255), {\n');
+    fprintf(file, '    0: (0, 0, 0),\n');
+    fprintf(file, '    0: (0, 0, 0),\n');
+    fprintf(file, '    1: (70, 70, 70),\n');
+    fprintf(file, '    2: (100, 40, 40),\n');
+    fprintf(file, '    3: (55, 90, 80),\n');
+    fprintf(file, '    4: (220, 20, 60),\n');
+    fprintf(file, '    5: (153, 153, 153),\n');
+    fprintf(file, '    6: (157, 234, 50),\n');
+    fprintf(file, '    7: (128, 64, 128),\n');
+    fprintf(file, '    8: (244, 35, 232),\n');
+    fprintf(file, '    9: (107, 142, 35),\n');
+    fprintf(file, '    10: (0, 0, 142),\n');
+    fprintf(file, '    11: (102, 102, 156),\n');
+    fprintf(file, '    12: (220, 220, 0),\n');
+    fprintf(file, '    13: (70, 130, 180),\n');
+    fprintf(file, '    14: (81, 0, 81),\n');
+    fprintf(file, '    15: (150, 100, 100),\n');
+    fprintf(file, '    16: (230, 150, 140),\n');
+    fprintf(file, '    17: (180, 165, 180),\n');
+    fprintf(file, '    18: (250, 170, 30),\n');
+    fprintf(file, '    19: (110, 190, 160),\n');
+    fprintf(file, '    20: (170, 120, 50),\n');
+    fprintf(file, '    21: (45, 60, 150),\n');
+    fprintf(file, '    22: (145, 170, 100),\n');
+    fprintf(file, '})\n');
     fprintf(file, '\n');
     fprintf(file, 'def _setup_mapping():\n');
     fprintf(file, '    global _mapDict\n');
@@ -59,5 +81,4 @@ function semantic_segmentation_rgb(fileName, sensorType, varName)
     fprintf(file, '    %s = np.ascontiguousarray(data)\n', varName);
     
     fclose(file);
-
 end

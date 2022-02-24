@@ -1,6 +1,6 @@
 port = int16(2000);
 client = py.carla.Client('localhost', port);
-client.set_timeout(2.0);
+client.set_timeout(10.0);
 world = client.get_world();
 
 % Spawn Vehicle
@@ -21,7 +21,7 @@ blueprint.set_attribute('image_size_y', '540')
 transform = py.carla.Transform(py.carla.Location(pyargs('x',-7.5, 'z',2.5)));
 sensor = world.spawn_actor(blueprint, transform, pyargs('attach_to',tesla));
 
-pyModule = sensorBind(sensor, "fin", "rgb", "array");
+pyModule = sensorBind(sensor, "rgb", "rgb", "array");
 currentImage = uint8(py.getattr(pyModule, 'array'));
 imageHandle = imshow(currentImage);
 set(gca,'units','pixels'); % set the axes units to pixels
@@ -122,7 +122,8 @@ while carla_is_running
         time = cputime - start_time;
 
         % Get current lidar scan
-        XYZ = single(py.getattr(moduleLidar, 'array'));
+        XYZI = single(py.getattr(moduleLidar, 'array'));
+        XYZ = lidarData(:, 1:3);
         
         % Flip the axis
         XYZ(:, 2) = -1 * XYZ(:, 2);

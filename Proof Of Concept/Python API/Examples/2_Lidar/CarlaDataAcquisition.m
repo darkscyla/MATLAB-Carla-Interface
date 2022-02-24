@@ -14,8 +14,7 @@ tesla.set_autopilot(true);
 % Lidar
 blueprint = world.get_blueprint_library().find('sensor.lidar.ray_cast');
 blueprint.set_attribute('points_per_second', '140000');
-blueprint.set_attribute('range', '2500');
-blueprint.set_attribute('sensor_tick', '0.1');
+blueprint.set_attribute('range', '25');
 blueprint.set_attribute('upper_fov', '45.0')
 blueprint.set_attribute('lower_fov', '-30.0')
 transform = py.carla.Transform(py.carla.Location(pyargs('x',0.8, 'z',1.7)));
@@ -26,8 +25,9 @@ moduleLidar = sensorBind(sensor, 'lidar_file', 'lidar', 'array');
 player = pcplayer([-25 25],[-25 25],[-10 10]);
 
 while isOpen(player)
-     view(player, single(py.getattr(moduleLidar, 'array')));
+    lidarData = single(py.getattr(moduleLidar, 'array'));
+    view(player, lidarData(:, 1:3));
 end
 
-tesla.destroy();
-sensor.destroy();
+fprintf('Destroyed tesla: %s\n', mat2str(tesla.destroy()));
+fprintf('Destroyed sensor: %s\n', mat2str(sensor.destroy()));

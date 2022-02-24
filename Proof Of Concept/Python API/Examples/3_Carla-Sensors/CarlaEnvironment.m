@@ -39,7 +39,7 @@ classdef CarlaEnvironment < matlab.System & matlab.system.mixin.Propagates
             % Perform one-time calculations, such as computing constants
             port = int16(2000);
             client = py.carla.Client('localhost', port);
-            client.set_timeout(2.0);
+            client.set_timeout(10.0);
             world = client.get_world();
             
             % Spawn Vehicle
